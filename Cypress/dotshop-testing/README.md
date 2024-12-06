@@ -60,6 +60,3 @@ This Cypress test automates the process of registering a new user, logging in, a
 11. **Verify that the "Log in" button is visible**:
     - After logging out, verify that the "Log in" button is visible.
    <img width="1287" alt="image" src="https://github.com/user-attachments/assets/9e6b6549-341d-4b60-9901-26d59f9aeeed">
-
-  });
-});
