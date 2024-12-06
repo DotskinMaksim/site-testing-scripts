@@ -70,5 +70,7 @@ This Cypress test automates the process of registering a new user, logging in, a
 | Login              |  05.12.2024    | Worked without any issues                                                                   | PASS          |
 | Add to cart        |  05.12.2024    | Worked without any issues                            | PASS          |
 | Order           |  05.12.2024    | Checkout couldn't be done because of payment opens in a new window and has only an imitation of itself| FAIL          |
+| Order cancel    |  05.12.2024    | Worked without any issues |  PASS           |
+
 | Order hystory           |  05.12.2024    | Worked without any issues                | PASS          |
 | Log out          |  05.12.2024    | Worked without any issues                      | PASS          |
