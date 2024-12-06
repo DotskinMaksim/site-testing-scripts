@@ -8,7 +8,6 @@ describe('Automate collecting product links from the campaign page', () => {
     const lastName = "Dotskin";  // Kasutaja perekonnanimi
     const phone = +37255553943;  // Kasutaja telefoninumber
 
-
     beforeEach(() => {
         cy.viewport(1920, 1080);  // Määrame brauseri vaateakna suuruse
     });
@@ -20,19 +19,20 @@ describe('Automate collecting product links from the campaign page', () => {
         cy.get('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll').click();  // Aktiveerime küpsiste aktsepteerimise
         cy.wait(wait);  // Ootame küpsiste akna kadumist
 
-        // Lisame 10 toodet ostukorvi
-        cy.get('.product-list--grid .product').each(($el, index) => {
-            if (index < productsToSelect) {  // Kui toote indeks on väiksem kui toote arv
-                cy.wrap($el)
-                    .find('a[data-plugin="cartButton"]')  // Otsime ostukorvi nuppu
-                    .click({ force: true });  // Klikime ostukorvi nupule, kui see on olemas
+      // Lisame 10 juhuslikku toodet ostukorvi
+        cy.get('.product-list--grid .product').then(($products) => {
+            const shuffledProducts = Cypress._.shuffle($products.toArray()); 
+            const selectedProducts = shuffledProducts.slice(0, productsToSelect); 
 
-                cy.wait(wait);  // Ootame, et järgmine klikk ei takistaks eelmise toimingu sooritamist
-            }
+            selectedProducts.forEach((product) => {
+                cy.wrap(product)
+                    .find('a[data-plugin="cartButton"]') 
+                    .click({ force: true }); 
+                cy.wait(wait); 
+            });
         });
 
-        cy.log('Collected Product Links:', productLinks);  // Logime kogutud toote lingid
-
+        cy.log('Collected Product Links:', productLinks); // Логируем собранные ссылки
         // Klikkime ostukorvi ikoonile
         cy.get('a.js-cart-button[data-plugin="popoverTrigger"]')
             .click({ force: true });
