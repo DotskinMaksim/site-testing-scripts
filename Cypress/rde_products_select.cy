@@ -1,9 +1,9 @@
 describe('Automate collecting product links from the campaign page', () => {
     const campaignUrl = 'https://www.rde.ee/';
-    const productsToSelect = 5;
+    const productsToSelect = 2;
     const productLinks = [];
-    const SHORT_WAIT = 10000;
-    const max = 10;
+    const SHORT_WAIT = 2000;
+    const max = 2;
 
     beforeEach(() => {
         cy.viewport(1920, 1080);
@@ -19,7 +19,7 @@ describe('Automate collecting product links from the campaign page', () => {
         // Добавление 10 продуктов в корзину
         // Добавление 10 продуктов в корзину
         cy.get('.product-list--grid .product').each(($el, index) => {
-            if (index < 10) {
+            if (index < 2) {
                 cy.wrap($el)
                     .find('a[data-plugin="cartButton"]')  // Используйте CSS-селектор для поиска ссылки
                     .click({ force: true });
@@ -28,61 +28,46 @@ describe('Automate collecting product links from the campaign page', () => {
             }
         });
 
-
-        for (let i = 1; i <= productsToSelect; i++) {
-            const randomIndex = Math.floor(Math.random() * max) + 1;
-            // Изменен селектор на соответствующий структуре HTML
-
-            cy.get(`.product-list--grid:nth-child(${randomIndex}) .item-img-block > img`)
-                .click();
-
-            // Получение текущего URL
-            cy.url().then(currentUrl => {
-                productLinks.push(currentUrl);
-            });
-
-            // Возвращаемся на страницу кампании
-            cy.visit(campaignUrl);
-            cy.wait(SHORT_WAIT);
-        }
         cy.log('Collected Product Links:', productLinks);
 
-        // Пройдем по собранным ссылкам и добавим товары в корзину
-        cy.wrap(productLinks).each(link => {
-            cy.visit(link);
-            cy.contains('Aseta korvi').click(); // 'Aseta korvi' — это кнопка добавления в корзину
-            cy.wait(SHORT_WAIT);
-        });
+      cy.get('a.js-cart-button[data-plugin="popoverTrigger"]')
+            .click({ force: true });
 
-        // Переходим в корзину
-        cy.visit('https://arvutitark.ee/ostukorv');
-        cy.wait(10000);
+           cy.get('a.btn.btn--secondary.btn--full[href="order/ee/"]')
+            .click({ force: true });
 
-        // Оформление заказа
-        cy.contains('Ostan külalisena').click();
-        cy.wait(5000);
+            cy.get('input#users_email')
+                .type('test@example.com');  // Введите нужный email
+           // Заполнение поля для номера телефона
+            cy.get('input[data-plugin="mask"]#users_mobile_phone')
+                .type('+37212345678');  // Пример номера телефона
 
-        cy.scrollTo('bottom');
+            // Заполнение поля для имени
+            cy.get('input#users_name')
+                .type('John');  // Пример имени
 
-        cy.get('input[name="billing.firstName"]').type('test');
-        cy.get('input[name="billing.lastName"]').type('test');
-        cy.get('input[name="billing.phone"]').type('12345678');
-        cy.get('input[name="billing.email"]').type('test@gmail.com');
+            // Заполнение поля для фамилии
+            cy.get('input#users_last_name')
+                .type('Doe');  // Пример фамилии
 
-        cy.get('span.check').first().click();
+          cy.get('a.overlay[role="button"]').eq(2)
+            .click({ force: true });
 
-        cy.scrollTo('top');
-        cy.contains('Arvutitark esindus').click();
 
-        cy.wait(5000);
+                  // Клик по первому элементу .nice-select
+            // Клик по элементу с индексом 1 (второй элемент)
+            cy.get('div.nice-select.form-control-select').eq(1)
+                .click();  // Открыть список
 
-        cy.contains('Järveotsa tee 50c, 13520 Tallinn').click();
+            // Затем выбрать нужный элемент из списка
+            cy.get('li[data-value="5"].option')
+                .click();  // Клик по элементу "Swedbank internetipank"
 
-        cy.wait(2000);
 
-        cy.contains('span', 'Nõustun Arvutitark OÜ e-poe').parent().find('input[type="checkbox"]').check({ force: true });
 
-        cy.scrollTo('bottom');
-        cy.contains('Vormistan tellimuse').click();
+
+            cy.get('#order-form-submit-button')
+                .click({ force: true });
+
     });
 });
