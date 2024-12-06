@@ -6,6 +6,8 @@ This Cypress test automates the process of registering a new user, logging in, a
 
 1. **Go to the registration page**:
    - Navigate to `http://localhost:3000/register`.
+   - <img width="1275" alt="image" src="https://github.com/user-attachments/assets/3b93d032-bd5a-4003-a2d4-dd93f343e49a">
+
 
 2. **Register a new user**:
    - Fill in the registration form with a username (`TestUser`), email (`testuser@example.com`), and password (`TestPassword123`).
