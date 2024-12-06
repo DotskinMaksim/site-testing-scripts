@@ -1,80 +1,95 @@
 const appUrl = "http://localhost:3000";
 
-describe('Registratsiooni ja sisselogimise test', () => {
-  it('Registreerib uue kasutaja ja logib sisse', () => {
+describe('Registration and Login Test', () => {
+
+  it('Register', () => {
     const username = 'TestUser';
     const email = 'testuser@example.com';
     const password = 'TestPassword123';
 
-
-    // Pöördumine registreerimislehele
+    // Navigate to the registration page
     cy.visit(`${appUrl}/register`);
-    cy.log('Minge registreerimislehele');
+    cy.log('Navigate to the registration page.');
 
-    // Kasutaja registreerimine
-    cy.get('input[placeholder="Kasutajanimi"]').type(username);
-    cy.get('input[placeholder="E-post"]').type(email);
-    cy.get('input[placeholder="Parool"]').type(password);
-    cy.get('input[placeholder="Kinnita parool"]').type(password);
+    // Register a user
+    cy.get('input[placeholder="Username"]').type(username);
+    cy.get('input[placeholder="Email"]').type(email);
+    cy.get('input[placeholder="Password"]').type(password);
+    cy.get('input[placeholder="Confirm Password"]').type(password);
     cy.get('button[type="submit"]').click();
-    cy.log('Täitke vorm ja saatke oma registreerimisandmed.');
+    cy.log('Fill the form and submit registration details.');
 
-    // Kontrollige, et õnnestus minna sisselogimislehele
+  });
+  it('Log in', () => {
+
+    // Verify successful navigation to login page
     cy.url().should('include', '/login').then(() => {
-      cy.log('Sisselogimislehele navigeerimine õnnestus.');
+      cy.log('Successfully navigated to the login page.');
     });
 
-    // Sisselogimine süsteemi
-    cy.get('input[placeholder="Kasutajanimi"]').type(username);
-    cy.get('input[placeholder="Parool"]').type(password);
+    // Login to the system
+    cy.get('input[placeholder="Username"]').type(username);
+    cy.get('input[placeholder="Password"]').type(password);
     cy.get('button[type="submit"]').click();
-    cy.log('Täitke vorm ja esitage oma sisselogimisandmed');
+    cy.log('Fill the form and submit login details.');
 
-    // Kontrollige, et õnnestus sisse logida ja suunati avalehele
+    // Verify successful login and redirection to the home page
     cy.url().should('eq', `${appUrl}/`).then(() => {
-      cy.log('Sisselogimine õnnestus, suunati avalehele.');
+      cy.log('Login successful, redirected to the home page.');
     });
+  });
 
-    // Esimese toote lisamine ostukorvi
-    cy.get('button').contains('Lisa ostukorvi').eq(0).should('be.visible').click();
-    cy.log('Esimene toode lisatud ostukorvi.');
+  it('Add To Cart', () => {
+    // Add the first product to the cart
+    cy.get('button').contains('Add to Cart').eq(0).should('be.visible').click();
+    cy.log('First product added to the cart.');
 
-    // Teise toote lisamine ostukorvi
-    cy.get('button').contains('Lisa ostukorvi').eq(0).should('be.visible').click();
-    cy.log('Teine toode lisatud ostukorvi.');
+    // Add the second product to the cart
+    cy.get('button').contains('Add to Cart').eq(1).should('be.visible').click();
+    cy.log('Second product added to the cart.');
 
-    // Kolmanda toote lisamine ostukorvi
-    cy.get('button').contains('Lisa ostukorvi').eq(0).should('be.visible').click();
-    cy.log('Kolmas toode lisatud ostukorvi.');
+    // Add the third product to the cart
+    cy.get('button').contains('Add to Cart').eq(2).should('be.visible').click();
+    cy.log('Third product added to the cart.');
+  });
 
-    // Külastamine ostukorvi lehele
+  it('Order', () => {
+    // Visit the cart page
     cy.visit(`${appUrl}/cart`);
-    cy.get('button').contains('Telli').eq(0).should('be.visible').click();
-    cy.log('Tellimuse vormistamiseks vajutatakse nuppu "Telli".');
+    cy.get('button').contains('Order').eq(0).should('be.visible').click();
+    cy.log('Clicked "Order" button to proceed with the order.');
 
-    // Ootame 2 sekundit enne järgmise toimingu tegemist
+    // Wait for 2 seconds before the next action
     cy.wait(2000);
-    cy.get('button').contains('Tühista makse').eq(0).should('be.visible').click();
-    cy.log('Makse tühistamiseks vajutati nuppu "Tühista makse".');
+  });
 
-    // Ootame veel 2 sekundit
+  it('Order Cancel', () => {
+    // Click on the cancel payment button
+    cy.get('button').contains('Cancel Payment').eq(0).should('be.visible').click();
+    cy.log('Clicked "Cancel Payment" button to cancel the payment.');
+
+    // Wait for 2 seconds
     cy.wait(2000);
+  });
 
-    // Külastamine tellimuste ajaloo lehele
+  it('Order history', () => {
+    // Navigate to the order history page
     cy.visit(`${appUrl}/order-history`);
     cy.url().should('eq', `${appUrl}/order-history`).then(() => {
-      cy.log('Tellimuste ajaloo lehele navigeerimine õnnestus.');
+      cy.log('Successfully navigated to the order history page.');
     });
 
-    cy.wait(2000);
+    cy.wait(4000); // Wait for 4 seconds to load order history
+  });
 
-    // Logi välja
-    cy.get('a').contains('Logi välja').click();
-    cy.log('Süsteemist väljalogimiseks vajutati nuppu "Logi välja".');
+  it('Logs out', () => {
+    // Click on the logout button
+    cy.get('a').contains('Log Out').click();
+    cy.log('Clicked "Log Out" button to log out of the system.');
 
-    // Kontrollige, et pärast väljumist kuvatakse nupp "Logi sisse"
-    cy.get('a').contains('Logi sisse').should('be.visible').then(() => {
-      cy.log('Pärast väljumist kuvatakse edukalt nupp "Logi sisse".');
+    // Verify that the login button appears after logging out
+    cy.get('a').contains('Log In').should('be.visible').then(() => {
+      cy.log('Successfully logged out, "Log In" button is visible.');
     });
   });
 });
