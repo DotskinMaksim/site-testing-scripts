@@ -6,6 +6,7 @@ describe('Registratsiooni ja sisselogimise test', () => {
     const email = 'testuser@example.com';
     const password = 'TestPassword123';
 
+
     // Pöördumine registreerimislehele
     cy.visit(`${appUrl}/register`);
     cy.log('Minge registreerimislehele');

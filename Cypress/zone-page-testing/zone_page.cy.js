@@ -9,6 +9,7 @@ describe('Google Search Cypress Tests', () => {
       return true; // Пропускаем другие ошибки
     });
 
+
     // Переход на целевую страницу
     cy.visit('https://maksimdotskin22.thkit.ee/hirmumaja/');
     cy.reload(); // Перезагрузка страницы для надежности

@@ -8,6 +8,7 @@ describe('Automate collecting product links from the campaign page', () => {
     const lastName = "Dotskin";  // Kasutaja perekonnanimi
     const phone = +37255553943;  // Kasutaja telefoninumber
 
+
     beforeEach(() => {
         cy.viewport(1920, 1080);  // Määrame brauseri vaateakna suuruse
     });
