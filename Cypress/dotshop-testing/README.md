@@ -60,3 +60,15 @@ This Cypress test automates the process of registering a new user, logging in, a
 11. **Verify that the "Log in" button is visible**:
     - After logging out, verify that the "Log in" button is visible.
    <img width="1287" alt="image" src="https://github.com/user-attachments/assets/9e6b6549-341d-4b60-9901-26d59f9aeeed">
+
+## Test Matrix
+
+
+| **Case**          | **Date**       | **Comment**                                                                                  | **PASS/FAIL** |
+|--------------------|----------------|----------------------------------------------------------------------------------------------|---------------|
+| Register           | 05.12.2024    | Worked without any issues                                                                   | PASS          |
+| Login              |  05.12.2024    | Worked without any issues                                                                   | PASS          |
+| Add to cart        |  05.12.2024    | Worked without any issues                            | PASS          |
+| Order           |  05.12.2024    | Checkout couldn't be done because of payment opens in a new window and has only an imitation of itself| FAIL          |
+| Order hystory           |  05.12.2024    | Worked without any issues                | PASS          |
+| Log out          |  05.12.2024    | Worked without any issues                      | PASS          |
