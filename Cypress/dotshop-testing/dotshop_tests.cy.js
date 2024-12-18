@@ -10,7 +10,10 @@ describe('Registratsiooni ja sisselogimise test', () => {
     // Pöördumine registreerimislehele
     cy.visit(`${appUrl}/register`);
     cy.log('Minge registreerimislehele');
-
+    
+    
+    
+    //REGISTER
     // Kasutaja registreerimine
     cy.get('input[placeholder="Kasutajanimi"]').type(username);
     cy.get('input[placeholder="E-post"]').type(email);
@@ -24,6 +27,7 @@ describe('Registratsiooni ja sisselogimise test', () => {
       cy.log('Sisselogimislehele navigeerimine õnnestus.');
     });
 
+    //LOGIN
     // Sisselogimine süsteemi
     cy.get('input[placeholder="Kasutajanimi"]').type(username);
     cy.get('input[placeholder="Parool"]').type(password);
@@ -34,7 +38,7 @@ describe('Registratsiooni ja sisselogimise test', () => {
     cy.url().should('eq', `${appUrl}/`).then(() => {
       cy.log('Sisselogimine õnnestus, suunati avalehele.');
     });
-
+  //ADD TO CART
     // Esimese toote lisamine ostukorvi
     cy.get('button').contains('Lisa ostukorvi').eq(0).should('be.visible').click();
     cy.log('Esimene toode lisatud ostukorvi.');
@@ -46,12 +50,16 @@ describe('Registratsiooni ja sisselogimise test', () => {
     // Kolmanda toote lisamine ostukorvi
     cy.get('button').contains('Lisa ostukorvi').eq(0).should('be.visible').click();
     cy.log('Kolmas toode lisatud ostukorvi.');
-
+  
+    
+    //ORDER
     // Külastamine ostukorvi lehele
     cy.visit(`${appUrl}/cart`);
     cy.get('button').contains('Telli').eq(0).should('be.visible').click();
     cy.log('Tellimuse vormistamiseks vajutatakse nuppu "Telli".');
-
+    
+    
+    //ORDER CANCEL
     // Ootame 2 sekundit enne järgmise toimingu tegemist
     cy.wait(2000);
     cy.get('button').contains('Tühista makse').eq(0).should('be.visible').click();
@@ -59,7 +67,8 @@ describe('Registratsiooni ja sisselogimise test', () => {
 
     // Ootame veel 2 sekundit
     cy.wait(2000);
-
+  
+    //ORDER HISTORY
     // Külastamine tellimuste ajaloo lehele
     cy.visit(`${appUrl}/order-history`);
     cy.url().should('eq', `${appUrl}/order-history`).then(() => {
@@ -68,7 +77,7 @@ describe('Registratsiooni ja sisselogimise test', () => {
 
     cy.wait(2000);
 
-    // Logi välja
+    // LOG OUT
     cy.get('a').contains('Logi välja').click();
     cy.log('Süsteemist väljalogimiseks vajutati nuppu "Logi välja".');
 
